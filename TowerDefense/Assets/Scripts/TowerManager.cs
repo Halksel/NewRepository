@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerManager : MonoBehaviour {
+public class TowerManager : SingletonMonoBehaviourFast<TowerManager> {
 
 	public List<Tower> towers;
 	public List<GameObject> templeteTowers;
@@ -13,9 +13,12 @@ public class TowerManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+        InputManager.Instance.TowerSelectInput();
 	}
-	public void Spawn(int id){
-
+	public void Spawn(){
+        var obj = Instantiate(templeteTowers[0]);
+        obj.transform.position = new Vector3(0.0f,0.0f,0.0f);
+        var tower = obj.GetComponent<Tower>();
+        towers.Add(tower);
 	}
 }

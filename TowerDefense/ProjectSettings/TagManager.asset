@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
+  - Map
   - 
-  - 
-  - 
+  - Road
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Map
+    uniqueID: 106303805
+    locked: 0
+  - name: Road
+    uniqueID: 157605797
     locked: 0

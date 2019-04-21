@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour {
+public class EnemyManager : SingletonMonoBehaviourFast<EnemyManager> {
 
 	public List<Enemy> enemies;
 	public List<GameObject> templeteEnemies;
@@ -15,4 +15,14 @@ public class EnemyManager : MonoBehaviour {
 	void Update () {
 
 	}
+
+    public GameObject SpawnEnemy(int id, GameObject road)
+    {
+        var obj = Instantiate(templeteEnemies[id]);
+        obj.transform.parent = gameObject.transform;
+        var enemy = obj.GetComponent<Enemy>();
+        enemy._roads = road;
+        enemies.Add(enemy);
+        return obj;
+    }
 }
