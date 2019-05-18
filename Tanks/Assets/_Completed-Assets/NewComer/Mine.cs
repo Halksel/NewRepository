@@ -8,9 +8,10 @@ namespace Complete
     {
         public float m_ExplosionRange;
         public float m_Damage;
-        private int m_MinedPlayer = 0; 
+        private int m_MinedPlayer = 0;
         private List<GameObject> m_Players;
         private GameObject m_Owner;
+
         // Use this for initialization
         void Start()
         {
@@ -21,7 +22,8 @@ namespace Complete
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A)) {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
                 Explode();
             }
             transform.rotation = Quaternion.LookRotation(m_Owner.transform.position);
@@ -31,16 +33,18 @@ namespace Complete
             if (collision.transform.tag == "Untagged") return;
             Explode();
         }
-        private void Explode() {
+        private void Explode()
+        {
             foreach (var player in m_Players)
             {
                 var distance = Vector3.Distance(transform.position, player.transform.position);
                 if (distance > m_ExplosionRange) continue;
                 player.SafeGetComponent<TankHealth>().TakeDamage(m_Damage * (1f - distance / m_ExplosionRange));
             }
-                Destroy(gameObject);
+            Destroy(gameObject);
         }
-        public void OwnerRegisterd(int id, GameObject _player) {
+        public void OwnerRegisterd(int id, GameObject _player)
+        {
             m_MinedPlayer = id;
             m_Owner = _player;
             gameObject.layer = LayerMask.NameToLayer("Player" + id.ToString() + "View");

@@ -80,8 +80,10 @@ namespace Complete
             }
 
 
-            if (Input.GetKeyDown(KeyCode.B)) {
-                StartCoroutine(m_Mining);
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                if (m_MineCount > 0)
+                    StartCoroutine(m_Mining);
             }
         }
 
@@ -117,7 +119,6 @@ namespace Complete
 
         private IEnumerator Mine()
         {
-            if (m_MineCount <= 0) yield break;
             m_TankManager.DisableMovement();
             m_MineCount--;
             var pos = transform.position;
