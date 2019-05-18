@@ -27,6 +27,7 @@ namespace Complete
         public void Setup ()
         {
             // Get references to the components.
+            m_Instance.gameObject.SetActive(true);
             m_Movement = m_Instance.GetComponent<TankMovement> ();
             m_Shooting = m_Instance.GetComponent<TankShooting> ();
             m_Shooting.m_TankManager = this;

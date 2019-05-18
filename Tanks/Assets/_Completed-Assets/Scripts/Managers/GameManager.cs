@@ -10,11 +10,14 @@ namespace Complete
         public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
         public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
         public float m_EndDelay = 3f;               // The delay between the end of RoundPlaying and RoundEnding phases.
-        public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
+        //public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
         public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
         public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
         public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
 
+        public Text[] m_ScoreText;
+        public Text m_TimeText;
+        private float m_Time;
         
         private int m_RoundNumber;                  // Which round the game is currently on.
         private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -28,10 +31,14 @@ namespace Complete
             // Create the delays so they only have to be made once.
             m_StartWait = new WaitForSeconds (m_StartDelay);
             m_EndWait = new WaitForSeconds (m_EndDelay);
+            m_Time = 0f;
 
             SpawnAllTanks();
             SetCameraTargets();
-
+            for(int i = 0; i < m_ScoreText.Length; ++i)
+            {
+                m_ScoreText[i].text = "Player " + (i+1).ToString() + ":" + m_RoundWinner.m_Wins.ToString() ;
+            }
             // Once the tanks have been created and the camera is using them as targets, start the game.
             StartCoroutine (GameLoop ());
         }
@@ -64,7 +71,7 @@ namespace Complete
             }
 
             // These are the targets the camera should follow.
-            m_CameraControl.m_Targets = targets;
+            //m_CameraControl.m_Targets = targets;
         }
 
 
@@ -102,7 +109,7 @@ namespace Complete
             DisableTankControl ();
 
             // Snap the camera's zoom and position to something appropriate for the reset tanks.
-            m_CameraControl.SetStartPositionAndSize ();
+            //m_CameraControl.SetStartPositionAndSize ();
 
             // Increment the round number and display text showing the players what round it is.
             m_RoundNumber++;
@@ -124,6 +131,9 @@ namespace Complete
             // While there is not one tank left...
             while (!OneTankLeft())
             {
+                m_Time += Time.deltaTime;
+                m_Time = ((int)(m_Time * 100)) / 100f;
+                ScoreAndTimeUI();
                 // ... return on the next frame.
                 yield return null;
             }
@@ -143,7 +153,11 @@ namespace Complete
 
             // If there is a winner, increment their score.
             if (m_RoundWinner != null)
+            {
                 m_RoundWinner.m_Wins++;
+                int n = m_RoundWinner.m_PlayerNumber;
+                m_ScoreText[n - 1].text = "Player " + n.ToString() + ":" + m_RoundWinner.m_Wins.ToString() ;
+            }
 
             // Now the winner's score has been incremented, see if someone has one the game.
             m_GameWinner = GetGameWinner ();
@@ -170,9 +184,9 @@ namespace Complete
                 if (m_Tanks[i].m_Instance.activeSelf)
                     numTanksLeft++;
             }
-
+            return false;
             // If there are one or fewer tanks remaining return true, otherwise return false.
-            return numTanksLeft <= 1;
+            //return numTanksLeft <= 1;
         }
         
         
@@ -261,6 +275,11 @@ namespace Complete
             {
                 m_Tanks[i].DisableControl();
             }
+        }
+
+        private void ScoreAndTimeUI()
+        {
+            m_TimeText.text = "Time :" + m_Time.ToString() + "s"; 
         }
     }
 }

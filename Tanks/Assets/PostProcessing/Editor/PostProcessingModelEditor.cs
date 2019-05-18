@@ -20,7 +20,7 @@ namespace UnityEditor.PostProcessing
         internal void OnPreEnable()
         {
             m_SettingsProperty = serializedProperty.FindPropertyRelative("m_Settings");
-            m_EnabledProperty = serializedProperty.FindPropertyRelative("m_Enabled");
+            m_EnabledProperty = serializedProperty.FindPropertyRelative("m_EnabledUI");
 
             OnEnable();
         }
