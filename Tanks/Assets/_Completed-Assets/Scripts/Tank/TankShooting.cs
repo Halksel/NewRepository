@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace Complete
 {
@@ -16,13 +17,11 @@ namespace Complete
         public float m_MaxLaunchForce = 30f;        // The force given to the shell if the fire button is held for the max charge time.
         public float m_MaxChargeTime = 0.75f;       // How long the shell can charge for before it is fired at max force.
 
-
         private string m_FireButton;                // The input axis that is used for launching shells.
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
-
-
+        
         private void OnEnable()
         {
             // When the tank is turned on, reset the launch force and the UI
@@ -38,6 +37,7 @@ namespace Complete
 
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+            m_Mining = Mine();
         }
 
 
@@ -78,7 +78,21 @@ namespace Complete
                 // ... launch the shell.
                 Fire ();
             }
+
+
+            if (Input.GetKeyDown(KeyCode.B)) {
+                StartCoroutine(m_Mining);
+            }
         }
+
+        public GameObject m_Mine;
+        public IEnumerator m_Mining;
+        public Vector3 m_MinePositionOffset;
+        public int m_MiningTime;
+        [SerializeField]
+        private int m_MineCount;
+        private int m_MineCountMax = 3;
+        public TankManager m_TankManager;
 
 
         private void Fire ()
@@ -99,6 +113,25 @@ namespace Complete
 
             // Reset the launch force.  This is a precaution in case of missing button events.
             m_CurrentLaunchForce = m_MinLaunchForce;
+        }
+
+        private IEnumerator Mine()
+        {
+            if (m_MineCount <= 0) yield break;
+            m_TankManager.DisableMovement();
+            m_MineCount--;
+            var pos = transform.position;
+            var obj = Instantiate(m_Mine);
+            obj.transform.position = pos + m_MinePositionOffset;
+            var mine = obj.GetComponent<Mine>();
+            mine.OwnerRegisterd(m_PlayerNumber, gameObject);
+            yield return new WaitForSeconds(m_MiningTime);
+            m_TankManager.EnableMovement();
+            m_Mining = Mine();
+        }
+
+        public void AddMine() {
+            m_MineCount = Mathf.Clamp(m_MineCount + 1, 0, m_MineCountMax);
         }
     }
 }

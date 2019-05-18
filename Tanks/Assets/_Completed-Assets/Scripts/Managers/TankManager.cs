@@ -29,6 +29,7 @@ namespace Complete
             // Get references to the components.
             m_Movement = m_Instance.GetComponent<TankMovement> ();
             m_Shooting = m_Instance.GetComponent<TankShooting> ();
+            m_Shooting.m_TankManager = this;
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas> ().gameObject;
 
             // Set the player numbers to be consistent across the scripts.
@@ -67,6 +68,13 @@ namespace Complete
             m_Shooting.enabled = true;
 
             m_CanvasGameObject.SetActive (true);
+        }
+
+        public void DisableMovement() {
+            m_Movement.IsMove = false;
+        }
+        public void EnableMovement() {
+            m_Movement.IsMove = true;
         }
 
 

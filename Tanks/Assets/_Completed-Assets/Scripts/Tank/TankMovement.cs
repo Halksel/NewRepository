@@ -10,7 +10,7 @@ namespace Complete
         public AudioSource m_MovementAudio;         // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
         public AudioClip m_EngineIdling;            // Audio to play when the tank isn't moving.
         public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
-		public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
+        public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
 
         private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
         private string m_TurnAxisName;              // The name of the input axis for turning.
@@ -19,6 +19,11 @@ namespace Complete
         private float m_TurnInputValue;             // The current value of the turn input.
         private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] m_particleSystems; // References to all the particles systems used by the Tanks
+
+        private bool m_IsMove = true;
+        public bool IsMove{
+            set { m_IsMove = value; }
+        }
 
         private void Awake ()
         {
@@ -111,6 +116,7 @@ namespace Complete
         private void FixedUpdate ()
         {
             // Adjust the rigidbodies position and orientation in FixedUpdate.
+            if (!m_IsMove) return;
             Move ();
             Turn ();
         }
