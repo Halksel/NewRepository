@@ -20,6 +20,13 @@ namespace Complete {
                 m_Gates[i].m_Manager = this;
             }
             m_TimeCount = m_CoolTime;
+            var ud = new TankData();
+            var data = new Dictionary<int, Vector3>();
+            data.Add( 0, Vector3.zero);
+            ud.d = data;
+            var str = JsonUtility.ToJson(ud);
+            var json = JsonUtility.FromJson<TankData>(str);
+            Debug.Log(json.d);
         }
 
         // Update is called once per frame

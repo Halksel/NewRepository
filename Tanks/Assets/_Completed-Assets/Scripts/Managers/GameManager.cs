@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Complete
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : SingletonMonoBehaviourFast<GameManager>
     {
         public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
         public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
@@ -34,7 +34,6 @@ namespace Complete
             m_Time = 0f;
 
             SpawnAllTanks();
-            SetCameraTargets();
             for(int i = 0; i < m_ScoreText.Length; ++i)
             {
                 m_ScoreText[i].text = "Player " + (i+1).ToString() + ":" + m_Tanks[i].m_Wins.ToString() ;
@@ -55,23 +54,6 @@ namespace Complete
                 m_Tanks[i].m_PlayerNumber = i + 1;
                 m_Tanks[i].Setup();
             }
-        }
-
-
-        private void SetCameraTargets()
-        {
-            // Create a collection of transforms the same size as the number of tanks.
-            Transform[] targets = new Transform[m_Tanks.Length];
-
-            // For each of these transforms...
-            for (int i = 0; i < targets.Length; i++)
-            {
-                // ... set it to the appropriate tank transform.
-                targets[i] = m_Tanks[i].m_Instance.transform;
-            }
-
-            // These are the targets the camera should follow.
-            //m_CameraControl.m_Targets = targets;
         }
 
 
