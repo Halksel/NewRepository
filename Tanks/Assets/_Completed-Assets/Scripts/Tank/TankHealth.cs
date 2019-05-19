@@ -19,6 +19,10 @@ namespace Complete
         private float m_CurrentHealth;                      // How much health the tank currently has.
         private bool m_Dead;                                // Has the tank been reduced beyond zero health yet?
 
+        private bool m_IsHurt = true;
+        public bool IsHurt{
+            set { m_IsHurt = value; }
+        }
 
         private void Awake ()
         {
@@ -46,6 +50,7 @@ namespace Complete
 
         public void TakeDamage (float amount)
         {
+            if (!m_IsHurt) return;
             // Reduce current health by the amount of damage done.
             m_CurrentHealth -= amount;
 

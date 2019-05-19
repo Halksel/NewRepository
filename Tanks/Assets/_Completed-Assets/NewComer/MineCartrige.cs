@@ -8,6 +8,7 @@ namespace Complete {
         private Material m_Material;
         public int m_BlinkTime;
         public int m_VanishTime;
+        public Shader m_Blinker;
         // Use this for initialization
         void Start()
         {
@@ -29,7 +30,8 @@ namespace Complete {
         IEnumerator Blink()
         {
             yield return new WaitForSeconds(m_BlinkTime);
-            m_Material.SetFloat("_Blink", 1f);
+            var col = m_Material.color;
+            var mat = GetComponent<MeshRenderer>().material.shader = m_Blinker;
             yield return new WaitForSeconds(m_VanishTime);
             Destroy(gameObject);
         }

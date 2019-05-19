@@ -4,9 +4,7 @@
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
-		_Period ("Period", Float) = 0.5
-		_Blink ("isBlink", Range(0,1)) = 0
-
+		_Period ("Period", Float) = 0.1
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -29,7 +27,6 @@
 		half _Metallic;
 		fixed4 _Color;
 		float _Period;
-		float _Blink;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -42,7 +39,7 @@
 			// Albedo comes from a texture tinted by color
 			float t = _Time;
 			float xt = 2 * (t / _Period - floor(t / _Period + 0.5));
-			float a = (xt < 0 && _Blink) ? 0.7 : 1;
+			float a = (xt < 0) ? 0.7 : 1;
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color * a;
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables

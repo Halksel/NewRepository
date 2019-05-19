@@ -21,6 +21,10 @@ namespace Complete
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
+        private bool m_IsFire = true;
+        public bool IsFire{
+            set { m_IsFire = value; }
+        }
 
         private void OnEnable()
         {
@@ -44,6 +48,7 @@ namespace Complete
 
         private void Update()
         {
+            if (!m_IsFire) return;
             // The slider should have a default value of the minimum launch force.
             m_AimSlider.value = m_MinLaunchForce;
 

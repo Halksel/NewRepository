@@ -37,7 +37,7 @@ namespace Complete
             SetCameraTargets();
             for(int i = 0; i < m_ScoreText.Length; ++i)
             {
-                m_ScoreText[i].text = "Player " + (i+1).ToString() + ":" + m_RoundWinner.m_Wins.ToString() ;
+                m_ScoreText[i].text = "Player " + (i+1).ToString() + ":" + m_Tanks[i].m_Wins.ToString() ;
             }
             // Once the tanks have been created and the camera is using them as targets, start the game.
             StartCoroutine (GameLoop ());
