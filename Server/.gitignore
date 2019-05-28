@@ -1,0 +1,7 @@
+/application/config/production/*
+/application/config/development/*
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
