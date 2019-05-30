@@ -6,13 +6,13 @@ class MY_Model extends CI_Model{
     parent::__construct();
     $this->load->database();
     $class = get_class($this);
-    $this->_table = strtolower(substr($class, 0, strpos($class, '_')));
+    $this->_table = substr($class, 0, strpos($class, '_'));
   }
   public function get(){
-    return $this->db->get($this->_table)->result_array();
+    return $this->db->get($this->_table)->result();
   }
   public function get_where($where){
-    return $this->db->where($where)->result_array();
+    return $this->db->where($where)->result();
   }
   public function insert($data){
     $this->db->set($data); 
