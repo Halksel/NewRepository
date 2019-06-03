@@ -9,10 +9,11 @@ class MY_Model extends CI_Model{
     $this->_table = substr($class, 0, strpos($class, '_'));
   }
   public function get(){
-    return $this->db->get($this->_table)->result();
+    return $this->db->get($this->_table);
+//     return $this->db->get($this->_table)->result();
   }
   public function get_where($where){
-    return $this->db->where($where)->result();
+    return $this->db->get_where($this->_table,$where)->result();
   }
   public function insert($data){
     $this->db->set($data); 
@@ -22,7 +23,7 @@ class MY_Model extends CI_Model{
   public function replace($data){
     $this->db->set($data); 
     $this->db->replace($this->_table);
-    return $this->db->replace_id();
+    return $this->db->insert_id();
   }
   public function set_order_by($datas){
     foreach($datas as $key => $value){
